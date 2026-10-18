@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#fff5fa">
+<title>برای سلی، با عشق</title>
+
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;
+ font-family:Tahoma,Arial,sans-serif;
+ background:#fff8fb;
+ color:#594653;
+ line-height:2
+}
+button,input{font:inherit}
+.screen{
+ min-height:100svh;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:30px 20px;
+ position:relative;
+ overflow:hidden
+}
+.welcome{
+ text-align:center;
+ background:radial-gradient(ellipse,#fff 0%,#fff5fa 65%,#f6dce9 100%)
+}
+.welcome h1{
+ color:#a45d7e;
+ font-size:clamp(2rem,7vw,3.5rem);
+ font-weight:500;
+ line-height:1.8
+}
+.intro{font-size:1.1rem;color:#805c70}
+.date{
+ display:block;
+ color:#a45d7e;
+ text-decoration:none;
+ font-size:clamp(3rem,12vw,5rem);
+ margin-top:25px
+}
+.heart{
+ font-size:3rem;
+ display:block;
+ animation:pulse 2s infinite
+}
+@keyframes pulse{50%{transform:scale(1.12)}}
+.counter-wrap{
+ text-align:center;
+ padding:35px 12px;
+ background:#fff8fb
+}
+.counter-title{color:#a45d7e;font-size:.95rem}
+.counter{
+ display:flex;
+ flex-wrap:wrap;
+ justify-content:center;
+ gap:8px
+}
+.unit{
+ min-width:65px;
+ padding:7px 9px;
+ background:#f8e2ec;
+ color:#93496c;
+ border-radius:5px
+}
+.unit b{display:block;font-size:1.2rem}
+.unit span{font-size:.75rem}
+.section{
+ min-height:70svh;
+ padding:75px 22px 95px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ position:relative;
+ background:linear-gradient(#fffafd,#fff3f8)
+}
+.section:nth-of-type(even){background:#fff8fb}
+.inner{width:min(100%,760px);margin:auto}
+.label{
+ text-align:center;
+ color:#bd7294;
+ font-size:.82rem;
+ margin-bottom:20px
+}
+h2{
+ text-align:center;
+ color:#a45d7e;
+ font-size:clamp(1.25rem,4vw,1.8rem);
+ font-weight:500;
+ line-height:1.8
+}
+.message{
+ text-align:center;
+ white-space:pre-line;
+ overflow-wrap:anywhere;
+ font-size:1rem;
+ line-height:2.35
+}
+.down{
+ position:absolute;
+ bottom:15px;
+ left:50%;
+ transform:translateX(-50%);
+ background:none;
+ border:0;
+ color:#bd7294;
+ font-size:2rem;
+ cursor:pointer
+}
+
+/* بخش رمزدار */
+.secret{
+ min-height:100svh;
+ background:radial-gradient(ellipse at top,#30174a,#10091b 65%,#08050d);
+ color:#f3eaff
+}
+.secret .label{color:#c4a0ff}
+.password-card{
+ width:min(100%,390px);
+ margin:auto;
+ padding:24px 20px;
+ border:1px solid #a855f766;
+ border-radius:18px;
+ background:#ffffff08;
+ box-shadow:0 0 35px #8b5cf633;
+ backdrop-filter:blur(12px);
+ text-align:center
+}
+.lock{font-size:2rem;color:#d8b4fe}
+.password-row{display:flex;gap:8px;margin:18px 0 10px}
+.password-row input{
+ width:0;flex:1;min-width:0;
+ background:#11091d;
+ border:1px solid #8b5cf7;
+ border-radius:9px;
+ padding:11px;
+ color:#fff;
+ text-align:center;
+ outline:none
+}
+.btn{
+ border:1px solid #c084fc;
+ border-radius:9px;
+ background:#7e22ce;
+ color:white;
+ padding:9px 15px;
+ cursor:pointer;
+ box-shadow:0 0 16px #a855f766
+}
+.hint-toggle{
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ gap:8px;
+ margin:12px auto 0;
+ color:#d8b4fe;
+ background:none;
+ border:0;
+ cursor:pointer
+}
+.hint-text{
+ display:none;
+ font-size:.82rem;
+ color:#eadcff;
+ line-height:1.9
+}
+.hint-text.open{display:block}
+.wrong{color:#f5b5d4;font-size:.88rem;min-height:2em}
+.shake{animation:shake .35s}
+@keyframes shake{
+ 25%{transform:translateX(-7px)}
+ 50%{transform:translateX(7px)}
+ 75%{transform:translateX(-4px)}
+}
+
+/* نامه‌ی مخفی */
+.secret-letter{
+ display:none;
+ width:min(100%,720px);
+ margin:25px auto;
+ padding:clamp(20px,5vw,42px);
+ background:#08070c;
+ border:1px solid #9b5cf6;
+ border-radius:12px;
+ box-shadow:0 0 30px #8b5cf755
+}
+.secret-letter.show{
+ display:block;
+ animation:openLetter .8s ease both
+}
+@keyframes openLetter{
+ from{opacity:0;transform:translateY(20px) scale(.98)}
+ to{opacity:1;transform:translateY(0) scale(1)}
+}
+.secret-letter h2{color:#d8b4fe}
+.typed-text{
+ white-space:pre-wrap;
+ overflow-wrap:anywhere;
+ color:#f6efff;
+ line-height:2.15;
+ font-size:clamp(.95rem,2.7vw,1.08rem);
+ text-align:right;
+ direction:rtl
+}
+.caret{
+ display:inline-block;
+ width:2px;
+ height:1.1em;
+ background:#c084fc;
+ animation:blink .8s steps(2) infinite
+}
+@keyframes blink{50%{opacity:0}}
+.close{
+ display:block;
+ margin:24px auto 0;
+ padding:8px 22px;
+ color:#e9d5ff;
+ background:transparent;
+ border:1px solid #a855f7;
+ border-radius:8px;
+ cursor:pointer
+}
+.footer{text-align:center;color:#bda8ce;font-size:.75rem}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;animation:none!important}
+}
+</style>
+</head>
+
+<body>
+
+<!-- صفحه‌ی شروع -->
+<section class="screen welcome" id="top">
+ <div>
+  <div style="color:#bd7294">26 MEHR · 11 MONTHS</div>
+  <h1>سلام مامی منننن<br>خوش اومدیییی بیا پایینننن</h1>
+  <p class="intro">عاشق تو شدن یکی از بهترین اتفاق های زندگیم بود</p>
+  <a class="date" href="#counter">۲۶ مهر<span class="heart">♡</span></a>
+ </div>
+ <button class="down" onclick="go('counter')">⌄</button>
+</section>
+
+<!-- شمارنده‌ی زنده -->
+<div class="counter-wrap" id="counter">
+ <p class="counter-title">قصه‌ی ما که از 26 آذر 1404 شروع شد</p>
+ <div class="counter">
+  <div class="unit"><b id="months">0</b><span>ماه</span></div>
+  <div class="unit"><b id="days">0</b><span>روز</span></div>
+  <div class="unit"><b id="hours">0</b><span>ساعت</span></div>
+  <div class="unit"><b id="minutes">0</b><span>دقیقه</span></div>
+  <div class="unit"><b id="seconds">0</b><span>ثانیه</span></div>
+ </div>
+</div>
+
+<section class="section" id="s1">
+ <div class="inner">
+  <div class="label">01 / قصه‌ی ما</div>
+  <h2>یازده ماه از ما</h2>
+  <div class="message">11 ماه شد که هرشب هر روز هر ساعت هر دقیقه به فکر توام
+به فکر اینم چجوری خوش‌حالت کنم چجوری حالتو خوب کنم چجوری ایندمونو بهتر کنم
+می‌دونم بعضی وقتا میزنم زیر قولام ولی خب از این به بعد قرار نیست تکرار بشه فداتشم
+11 ماه شد که زندگیمو بهترین ورژنی که میتونست باشه کردی
+دختر تو فرشته ای
+
+البته 11 ماه بیشتره من همیشه تو کف شما بودم خانوم خوشگله🥰😔
+قربون شوما بشم من مامانی منننن شما بهترین مامان دنیایی بهترین دختر دنیایی بهترینیییی
+لیث بهت
+
+مامی خوشگلم تو تموم زندگی منی
+من نفس کشیدنم بخاطر توعههه قربون شکلت بشم منننن
+قربون چشات بشم من
+خیلیییی عاشقتم
+تموم تلاش کردن من بخاطر اینه آیندمونو بهتر کنممم تورو خجالت زده نکنممم</div>
+ </div>
+ <button class="down" onclick="go('s2')">⌄</button>
+</section>
+
+<section class="section" id="s2">
+ <div class="inner">
+  <div class="label">02 / خاطره‌ی ما</div>
+  <h2>اون پرنک معروف</h2>
+  <div class="message">یادته اونموقع که هنوز اوکی نشده بودیم اومدی به بهونه پرنک گفتی آره دوستت دارم بعد من گفتم پرنک نکنید اینا گفتی اره پرنک بود
+اونموقع تو کونم عروسی بود 🤣😭 ولی فهمیدم پرنکه قلبم شیکیست 🤣💔 ولی الان مال خودمیییییییی 11 ماهه که مال خودمییییی همینی که هستتتتت</div>
+ </div>
+ <button class="down" onclick="go('s3')">⌄</button>
+</section>
+
+<section class="section" id="s3">
+ <div class="inner">
+  <div class="label">03 / چیزهای دوست‌داشتنی</div>
+  <h2>می‌دونی عاشق چه چیزهاییتم؟</h2>
+  <div class="message">می‌دونی عاشق چه چیز هاییتم؟
+همه چیت 🤭
+حالا اگه بخوام بگم
+لبخندتتتتت . صداتتتتت . چشاتتتت حتی کوچیک ترین کارات . ناز کردناتتتت
+آره عزیزم حتی کوچیک ترین کارایی که تو فکر میکنی چیز خاصی نیست من عاشقشونم
+باورت میشه صدام می‌کنی ابولولولولوم چقدر اکلیلی میشم🤣🥰
+ولی خب هیچی جای پسرم رو نمیگیره🤧</div>
+ </div>
+ <button class="down" onclick="go('s4')">⌄</button>
+</section>
+
+<section class="section" id="s4">
+ <div class="inner">
+  <div class="label">04 / آرامش من</div>
+  <h2>یکی از قشنگ‌ترین حس‌ها</h2>
+  <div class="message">مامی میدونی یکی از قشنگ ترین حس های دنیا برای من چیه ؟
+وقتیه که حالم بده و باهام حرف میزنی و سعی میکنی آرومم کنی:)
+وقتی حالم بده  قربون صدقم میری دوست دارم همون موقع هرچی دارم رو بدم فقط بغلت کنم</div>
+ </div>
+ <button class="down" onclick="go('s5')">⌄</button>
+</section>
+
+<section class="section" id="s5">
+ <div class="inner">
+  <div class="label">05 / چرا تو؟</div>
+  <h2>اگه یکی ازم بپرسه چرا سلی برام خاصه؟ چرا از بین همه، اونو انتخاب کردم؟</h2>
+  <div class="message">میگم که می‌دونم عاشقمه و منم عاشقشم
+بهترین ادمیه که میتونه وجود داشته باشه
+هیچوقت بهم دروغ نگفته
+هیچ وقت حالمو بد نکرده اگر هم حالم بد بوده حالمو خوب کرده
+با همه فرق داره
+حداقل می‌دونم اون واقعا دوسم داره:)
+و بهم آسیب نمیزنه</div>
+ </div>
+ <button class="down" onclick="go('s6')">⌄</button>
+</section>
+
+<section class="section" id="s6">
+ <div class="inner">
+  <div class="label">06 / همیشه یادت باشه</div>
+  <h2>دخترم اینو همیشه بدون</h2>
+  <div class="message">دخترم اینو همیشه بدون
+تو از اندازه کافی هم بهتری
+تو بهترین دختری هستی که میتونه وجود داشته باشه من عاشق تو ام و هرکاری کنی حسم ازت کم نمیشه هیچوقت خودت رو کم نبین
+تو بی نقص ترین دختر دنیایی
+هیچی کم نداری</div>
+ </div>
+ <button class="down" onclick="go('s7')">⌄</button>
+</section>
+
+<section class="section" id="s7">
+ <div class="inner">
+  <div class="label">07 / قول من به تو</div>
+  <h2>قولی که برای آینده‌مون بهت می‌دم</h2>
+  <div class="message">سلی من قول میدم تموم تلاشمو کنم که بهترین آینده رو بسازم برا جفتمون و بچه هامون
+شده باشه از همه چیم بگذرم می‌گذرم که فقط کنار تو آیندمو داشته باشم
+دوست دارم تو مادر بچه هام باشی :)
+مگه از تو بهتر وجود داره آخه
+قول میدم همیشه حالتو خوب کنم
+همیشه از صد هم بیشتر بزارم برات تموم جونمو عمرمو میزارم برای تو و ایندمون</div>
+ </div>
+ <button class="down" onclick="go('s8')">⌄</button>
+</section>
+
+<section class="section" id="s8">
+ <div class="inner">
+  <div class="label">08 / ممنون که هستی</div>
+  <h2>سلی مامان کوشولوم</h2>
+  <div class="message">سلی مامان کوشولوم
+مرسی که وارد زندگیم شدی
+مرسی که بهترین زندگیو برام ساختی
+هیچوقت لطف هایی که بهم کردیو یادم نمیره
+تو بهترین اتفاق زندگی منی
+خوشحالم که تورو دارم
+بوس به دستات</div>
+ </div>
+ <button class="down" onclick="go('secret')">⌄</button>
+</section>
+
+<!-- بخش رمزدار -->
+<section class="section secret" id="secret">
+ <div class="inner">
+  <div class="label">THE SECRET</div>
+
+  <div class="password-card" id="passwordCard">
+   <div class="lock">♙</div>
+   <div class="password-row">
+    <input id="password" type="password" placeholder="••••••" autocomplete="off" aria-label="رمز نامه">
+    <button class="btn" id="openBtn">باز کردن</button>
+   </div>
+
+   <button class="hint-toggle" id="hintToggle">
+    <span>💡</span><span>HINT</span><span id="hintArrow">⌄</span>
+   </button>
+
+   <p class="hint-text" id="hintText">اگه رمز رو بلد نیستی خانوم خوشگله برو پیوی ابول و کلمه یا جمله ای رو که دوست داره رو بهش بگو تا رمز رو بهت بگه</p>
+   <p class="wrong" id="wrongMessage"></p>
+  </div>
+
+  <article class="secret-letter" id="secretLetter">
+   <h2>برای مامی کوشولوم</h2>
+   <div class="typed-text" id="typedText"></div><span class="caret" id="caret"></span>
+   <button class="close" id="closeLetter">بستن نامه</button>
+  </article>
+  <p class="footer">یه گوشه‌ی کوچیک از دنیای ما</p>
+ </div>
+</section>
+
+<script>
+/* 26 آذر 1404، ساعت 23:33 */
+const startDate = new Date(2025,11,17,23,33,0);
+const $ = id => document.getElementById(id);
+
+function addMonths(date,count){
+ const d=new Date(date),day=d.getDate();
+ d.setMonth(d.getMonth()+count);
+ if(d.getDate()<day)d.setDate(0);
+ return d;
+}
+
+function updateCounter(){
+ const now=new Date();
+ if(now<startDate)return;
+ let months=(now.getFullYear()-startDate.getFullYear())*12+
+   now.getMonth()-startDate.getMonth();
+ let anchor=addMonths(startDate,months);
+ if(anchor>now){months--;anchor=addMonths(startDate,months);}
+ let rest=Math.floor((now-anchor)/1000);
+ const days=Math.floor(rest/86400);rest%=86400;
+ const hours=Math.floor(rest/3600);rest%=3600;
+ const minutes=Math.floor(rest/60);
+ const seconds=rest%60;
+ $("months").textContent=months;
+ $("days").textContent=days;
+ $("hours").textContent=hours;
+ $("minutes").textContent=minutes;
+ $("seconds").textContent=seconds;
+}
+updateCounter();
+setInterval(updateCounter,1000);
+
+function go(id){
+ document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
+
+$("hintToggle").addEventListener("click",()=>{
+ const open=$("hintText").classList.toggle("open");
+ $("hintArrow").textContent=open?"⌃":"⌄";
+});
+
+const anniversaryLetter=`دختر قشنگم  ماهگردمون مبارکککک
+خیلییییی دوستت دارممم
+خوشحالم که  هنوز باهمیم و قرارم باشیمممم
+این آخرش نیستتتتتاااا
+هنوز خیلی موندههه
+قراره یه مسیر خیلیییی طولانی باهم داشته باشیمممم تو زندگیمون
+عاشقتممممم
+این تایم بهترین تایمی بوده که تو کل زندگیم داشتم
+مرسی ازتتتتتت مامییی
+بوس طولانی به لبات🤭🤧
+این تایم تو برای من همه چی بودیییی
+دخترم بودی . مامانم بودییی . زنم بودیییی . دوست دخترم بودییی .  همه زندگیم بودییییی حیحیحی
+دختر خودمی تا آخرش خانوم خوشگله
+بلیسمت خانومییییییییییی
+اینو همیشه یادت باشه من هیچوقت هیچوقت ولت نمیکنمممم اصن چرا باید ولت کنم دختر به این نازی آدم مگه دختر خودشو ول میکنه؟:)
+هرچی بگم کم گفتم خوشحالممممم واقعا خوشحالممممم ذوق دارم برای سالگردددد
+ببین واقعا نمی‌دونم چجوری بگم تو توی این ۱۱ ماه همه جوره به من کمک کردی همه جوره پشتم بودی همه جوره حالمو خوب کردی و واقعا عاشقتم مرسی ازت قربون چشات بشم من الهی
+در آخر میخوام بگم
+کل زندگیم بخاطر اینه تورو دارم کل زنده موندنم برای اینه که تورو دارم
+تو نبودی من هیچوقت اینجوری نبودم
+تو بهترین کمک رو به من کردی فداتشم
+۱۱ ماه پر از عشق و علاقه و بحث های کوشولو رو با  تو تجربه کردم و خوشحالم که با تو تجربه کردم
+
+ماهگردمون مبارک مامی کوشولو:)
+خیلی عاشقتم عاشقتم عاشقتم تا آخر عمرررر`;
+
+let typingTimer;
+
+function startTyping(){
+ clearInterval(typingTimer);
+ $("typedText").textContent="";
+ $("caret").style.display="inline-block";
+ let i=0;
+ typingTimer=setInterval(()=>{
+  if(i>=anniversaryLetter.length){
+   clearInterval(typingTimer);
+   $("caret").style.display="none";
+   return;
+  }
+  $("typedText").textContent+=anniversaryLetter[i++];
+ },24);
+}
+
+function openLetter(){
+ if($("password").value==="269S.A"){
+  $("wrongMessage").textContent="";
+  $("passwordCard").style.display="none";
+  $("secretLetter").classList.add("show");
+  startTyping();
+ }else{
+  $("passwordCard").classList.remove("shake");
+  void $("passwordCard").offsetWidth;
+  $("passwordCard").classList.add("shake");
+  $("wrongMessage").textContent="خانم خوشگله برو کمک بگیر از ابول🤧";
+  $("password").value="";
+  $("password").focus();
+ }
+}
+
+$("openBtn").addEventListener("click",openLetter);
+$("password").addEventListener("keydown",e=>{
+ if(e.key==="Enter")openLetter();
+});
+
+$("closeLetter").addEventListener("click",()=>{
+ clearInterval(typingTimer);
+ $("secretLetter").classList.remove("show");
+ $("passwordCard").style.display="block";
+ $("password").value="";
+ $("typedText").textContent="";
+ $("caret").style.display="inline-block";
+ $("secret").scrollIntoView({behavior:"smooth"});
+});
+</script>
+</body>
+  </html>
+  
